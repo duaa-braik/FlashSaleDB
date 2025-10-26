@@ -2,7 +2,7 @@ namespace FlashSaleDB.Domain.Entities;
 
 public class Product
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
     
     public string Name { get; set; }
     
@@ -16,7 +16,7 @@ public class Product
 
     public DateOnly ExpirationDate { get; set; }
     
-    public string SaleId { get; set; }
+    public int SaleId { get; set; }
     
     public Sale Sale { get; set; }
 

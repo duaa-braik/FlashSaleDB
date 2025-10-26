@@ -2,13 +2,13 @@ namespace FlashSaleDB.Domain.Entities;
 
 public class Order
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
-    public string CartId { get; set; }
+    public Guid CartId { get; set; }
 
     public Cart Cart { get; set; }
     
-    public string UserId { get; set; }
+    public Guid UserId { get; set; }
 
     public User User { get; set; }
 
