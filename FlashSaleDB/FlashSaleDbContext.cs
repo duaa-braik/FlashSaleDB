@@ -1,4 +1,4 @@
-using FlashSaleDB.Domain.Entities;
+using FlashSaleDB.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlashSaleDB;
