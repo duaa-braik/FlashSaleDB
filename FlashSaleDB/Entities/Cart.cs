@@ -1,4 +1,4 @@
-namespace FlashSaleDB.Domain.Entities;
+namespace FlashSaleDB.Entities;
 
 public class Cart
 {
