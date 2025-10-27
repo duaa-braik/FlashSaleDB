@@ -9,6 +9,6 @@ public class TimestampGenerator : ValueGenerator<DateTime>
 
     public override DateTime Next(EntityEntry entry)
     {
-        return new DateTime();
+        return DateTime.UtcNow;
     }
 }
