@@ -1,5 +1,8 @@
+using System.Linq.Expressions;
 using FlashSaleDB.Entities;
+using FlashSaleDB.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace FlashSaleDB;
 
@@ -76,5 +79,42 @@ public class FlashSaleDbContext: DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Password)
             .HasMaxLength(500);
+
+        configurePropertyGenerator<User, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<Cart, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<Order, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<Payment, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<Product, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<Order, Guid, UuidGenerator>(modelBuilder, e => e.Id);
+        
+        configurePropertyGenerator<User, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Cart, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Inventory, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Order, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Payment, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Product, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Reservation, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+        
+        configurePropertyGenerator<Sale, DateTime, TimestampGenerator>(modelBuilder, e => e.CreatedAt);
+    }
+    
+    private static void configurePropertyGenerator<TEntity,TProperty, TGenerator>(ModelBuilder modelBuilder, Expression<Func<TEntity,TProperty>> property)
+        where TEntity : class where TGenerator : ValueGenerator
+    {
+        modelBuilder.Entity<TEntity>()
+            .Property(property)
+            .HasValueGenerator<TGenerator>()
+            .ValueGeneratedOnAdd();
     }
 }
