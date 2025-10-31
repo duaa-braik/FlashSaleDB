@@ -33,6 +33,11 @@ public class FlashSaleDbContext: DbContext
                 r => r.HasOne<Cart>().WithMany().HasForeignKey(e => e.CartId),
                 l => l.HasOne<Product>().WithMany().HasForeignKey(e => e.ProductId));
         
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Inventory)
+            .WithOne(i => i.Product)
+            .HasForeignKey<Inventory>(i => i.ProductId);
+        
         modelBuilder.Entity<Inventory>()
             .HasKey(i => new { i.Id, i.ProductId });
 

@@ -12,13 +12,15 @@ public class Product
     
     public decimal Price { get; set; }
     
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public DateOnly ExpirationDate { get; set; }
     
-    public int SaleId { get; set; }
+    public int? SaleId { get; set; }
     
-    public Sale Sale { get; set; }
+    public Sale? Sale { get; set; }
+
+    public Inventory Inventory { get; set; }
 
     public ICollection<Cart> Carts { get; set; }
     
