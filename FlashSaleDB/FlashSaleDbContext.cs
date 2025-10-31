@@ -77,7 +77,7 @@ public class FlashSaleDbContext: DbContext
             .HasMaxLength(100);
         
         modelBuilder.Entity<User>()
-            .Property(u => u.Password)
+            .Property(u => u.PasswordHash)
             .HasMaxLength(500);
 
         configurePropertyGenerator<User, Guid, UuidGenerator>(modelBuilder, e => e.Id);
