@@ -22,7 +22,7 @@ public class Product
 
     public Inventory Inventory { get; set; }
 
-    public ICollection<Cart> Carts { get; set; }
+    public ICollection<CartItem> CartItems { get; set; }
     
     public DateTime CreatedAt { get; set; }
 

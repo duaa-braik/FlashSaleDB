@@ -6,7 +6,7 @@ public class Cart
 
     public Guid UserId { get; set; }
     
-    public ICollection<Product> Products { get; set; }
+    public ICollection<CartItem> CartItems { get; set; }
 
     public DateTime CreatedAt { get; set; }
     

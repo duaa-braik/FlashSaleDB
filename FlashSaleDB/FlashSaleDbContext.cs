@@ -26,12 +26,18 @@ public class FlashSaleDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Product>()
-            .HasMany(p => p.Carts)
-            .WithMany(c => c.Products)
-            .UsingEntity<CartItem>(
-                r => r.HasOne<Cart>().WithMany().HasForeignKey(e => e.CartId),
-                l => l.HasOne<Product>().WithMany().HasForeignKey(e => e.ProductId));
+        modelBuilder.Entity<CartItem>()
+            .HasKey(ci => new { ci.CartId, ci.ProductId });
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.Cart)
+            .WithMany(c => c.CartItems)
+            .HasForeignKey(ci => ci.CartId);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(ci => ci.Product)
+            .WithMany(p => p.CartItems)
+            .HasForeignKey(ci => ci.ProductId);
         
         modelBuilder.Entity<Product>()
             .HasOne(p => p.Inventory)
