@@ -85,7 +85,8 @@ namespace FlashSaleDB.Migrations
 
                     b.HasKey("Id", "ProductId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Inventory");
                 });
@@ -182,7 +183,6 @@ namespace FlashSaleDB.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -193,7 +193,7 @@ namespace FlashSaleDB.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("SaleId")
+                    b.Property<int?>("SaleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -331,8 +331,8 @@ namespace FlashSaleDB.Migrations
             modelBuilder.Entity("FlashSaleDB.Entities.Inventory", b =>
                 {
                     b.HasOne("FlashSaleDB.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .WithOne("Inventory")
+                        .HasForeignKey("FlashSaleDB.Entities.Inventory", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -373,9 +373,7 @@ namespace FlashSaleDB.Migrations
                 {
                     b.HasOne("FlashSaleDB.Entities.Sale", "Sale")
                         .WithMany()
-                        .HasForeignKey("SaleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SaleId");
 
                     b.Navigation("Sale");
                 });
@@ -397,6 +395,12 @@ namespace FlashSaleDB.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("FlashSaleDB.Entities.Product", b =>
+                {
+                    b.Navigation("Inventory")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
