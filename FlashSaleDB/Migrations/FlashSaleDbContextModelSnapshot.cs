@@ -91,42 +91,6 @@ namespace FlashSaleDB.Migrations
                     b.ToTable("Inventory");
                 });
 
-            modelBuilder.Entity("FlashSaleDB.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(36)
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Order");
-                });
-
             modelBuilder.Entity("FlashSaleDB.Entities.Payment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -313,19 +277,65 @@ namespace FlashSaleDB.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(36)
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CorrelationId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ReservationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
+
             modelBuilder.Entity("FlashSaleDB.Entities.CartItem", b =>
                 {
-                    b.HasOne("FlashSaleDB.Entities.Cart", null)
-                        .WithMany()
+                    b.HasOne("FlashSaleDB.Entities.Cart", "Cart")
+                        .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlashSaleDB.Entities.Product", null)
-                        .WithMany()
+                    b.HasOne("FlashSaleDB.Entities.Product", "Product")
+                        .WithMany("CartItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("FlashSaleDB.Entities.Inventory", b =>
@@ -339,28 +349,9 @@ namespace FlashSaleDB.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("FlashSaleDB.Entities.Order", b =>
-                {
-                    b.HasOne("FlashSaleDB.Entities.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlashSaleDB.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("FlashSaleDB.Entities.Payment", b =>
                 {
-                    b.HasOne("FlashSaleDB.Entities.Order", "Order")
+                    b.HasOne("Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -380,7 +371,7 @@ namespace FlashSaleDB.Migrations
 
             modelBuilder.Entity("FlashSaleDB.Entities.Reservation", b =>
                 {
-                    b.HasOne("FlashSaleDB.Entities.Order", "Order")
+                    b.HasOne("Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,8 +388,30 @@ namespace FlashSaleDB.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.HasOne("FlashSaleDB.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId");
+
+                    b.HasOne("FlashSaleDB.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlashSaleDB.Entities.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
             modelBuilder.Entity("FlashSaleDB.Entities.Product", b =>
                 {
+                    b.Navigation("CartItems");
+
                     b.Navigation("Inventory")
                         .IsRequired();
                 });
