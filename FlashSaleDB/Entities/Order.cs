@@ -1,22 +1,20 @@
-namespace FlashSaleDB.Entities;
+using FlashSaleDB.Entities;
 
 public class Order
 {
     public Guid Id { get; set; }
 
-    public Guid CartId { get; set; }
+    public Guid? CartId { get; set; }
+    public Cart? Cart { get; set; }
 
-    public Cart Cart { get; set; }
-    
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
+    public User? User { get; set; }
 
-    public User User { get; set; }
+    public Guid? ReservationId { get; set; }    
+    public string? CorrelationId { get; set; }  
 
     public decimal Total { get; set; }
-
-    public string OrderStatus { get; set; }
-
+    public string OrderStatus { get; set; } = "PendingPayment";
     public DateTime CreatedAt { get; set; }
-    
     public DateTime? UpdatedAt { get; set; }
 }
