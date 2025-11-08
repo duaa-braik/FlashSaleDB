@@ -23,6 +23,8 @@ public class FlashSaleDbContext: DbContext
     public DbSet<Reservation> Reservation { get; set; }
 
     public DbSet<Payment> Payment { get; set; }
+    
+    public DbSet<Order> Order { get; set; }
 
     public FlashSaleDbContext(DbContextOptions<FlashSaleDbContext> options) : base(options) { }
 
